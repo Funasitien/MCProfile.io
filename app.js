@@ -5,6 +5,7 @@ import session from 'express-session'
 import bodyParser from 'body-parser'
 import ejs from 'ejs'
 import rateLimit from 'express-rate-limit'
+import xboxRequest from './js/xboxRequest.js'
 
 // Routes
 import lookupRouter from './routes/lookup.js'
@@ -22,14 +23,14 @@ const app = express()
 
 // Middleware
 app.set('view engine', 'ejs')
-app.set('trust proxy', true)
+app.set('trust proxy', false)
 app.use(express.static('attributes', { extensions: ['ico'] }))
 app.use(express.static('attributes'))
 app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }))
 // Apply the global rate limiter to all routes except the API routes
 app.use((req, res, next) => {
-    globalLimiter(req, res, next)
+  globalLimiter(req, res, next)
 })
 app.use(session({
   secret: process.env.EXPRESS_SESSION_SECRET,
@@ -58,7 +59,6 @@ app.use((req, res, next) => {
 
 app.use('/api', apiRouter)
 app.use('/endpoints', endpointsRouter)
-app.use('/auth', authRouter)
 
 // Error handling middleware
 // Specific error handling middleware for different types of errors.
@@ -90,7 +90,24 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`)
 })
 
-// Run server.
+async function startInitialXboxLookup() {
+  try {
+    const extension = '/users/gt(KejonaMC)/profile/settings'
+    await xboxRequest.requestXBLData(extension)
+    console.log('Startup Xbox lookup succeeded — tokens are present in cache (or were obtained).')
+  } catch (err) {
+    if (err && err.code === 'MSA_DEVICE_CODE_STARTED') {
+      console.log('MSA device-code authentication started at startup.')
+      console.log('Follow instructions written to:', err.deviceCodeFile)
+    } else {
+      console.warn('Startup Xbox lookup failed (non-fatal):', err && err.message ? err.message : err)
+    }
+  }
+}
+
 app.listen(port, () => {
   console.log(`Web-server started on port ${port}.`)
+  startInitialXboxLookup().catch((e) => {
+    console.error('Error during startup Xbox lookup:', e)
+  })
 })

@@ -9,5 +9,5 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - 8888:8888
+      - 80:80
     command: ["node", "--inspect=0.0.0.0:9229", "app.js"]

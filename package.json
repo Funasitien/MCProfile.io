@@ -5,8 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "build-sass": "sass --no-source-map scss:attributes/styles",
-    "watch-sass": "sass --no-source-map --watch scss:attributes/styles",
+    "build-sass": "sass --no-source-map --quiet-deps scss:attributes/styles",
+    "watch-sass": "sass --no-source-map --watch --quiet-deps scss:attributes/styles",
     "run": "node app.js",
     "build": "npm install",
     "start": "npm-run-all --parallel build-sass watch-sass run"
@@ -15,24 +15,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/msal-node": "^1.17.2",
     "apicache": "^1.6.3",
-    "body-parser": "^1.20.1",
-    "bootstrap": "^5.3.0-alpha3",
-    "bootswatch": "^5.2.3",
+    "body-parser": "^2.2.2",
+    "bootstrap": "^5.3.8",
+    "bootswatch": "^5.3.8",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "express-rate-limit": "^6.7.0",
-    "express-session": "^1.17.3",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.18.2",
     "hex-to-uuid": "^1.1.1",
-    "moment": "^2.29.4",
-    "mysql2": "^3.3.0",
+    "moment": "^2.30.1",
     "npm-run-all": "^4.1.5",
-    "prismarine-auth": "^2.4.1",
-    "sass": "^1.62.0",
-    "superagent": "^8.0.9",
-    "uuid": "^9.0.0"
+    "prismarine-auth": "^2.7.0",
+    "sass": "^1.97.2",
+    "superagent": "^10.3.0",
+    "uuid": "^13.0.0"
   }
 }
