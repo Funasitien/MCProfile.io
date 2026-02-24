@@ -1,7 +1,7 @@
 import request from 'superagent'
 import { Authflow } from 'prismarine-auth'
 
-const BASE_URL = 'https://api.mojang.com'
+const BASE_URL = 'https://api.minecraftservices.com'
 const CACHE_DIR = './cache'
 const USER_IDENTIFIER = 'KejonaMC'
 
@@ -11,7 +11,7 @@ async function requestMCData(identifier, isUsername) {
     const { userHash, XSTSToken } = await flow.getXboxToken()
 
     const id = isUsername ? (await request
-      .get(`${BASE_URL}/users/profiles/minecraft/${identifier}`)
+      .get(`${BASE_URL}/minecraft/profile/lookup/name/${identifier}`)
       .then(res => res.body.id)) : identifier
 
     const { body } = await request
