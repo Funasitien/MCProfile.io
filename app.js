@@ -23,7 +23,7 @@ const app = express()
 
 // Middleware
 app.set('view engine', 'ejs')
-app.set('trust proxy', true)
+app.set('trust proxy', 2)
 app.use(express.static('attributes', { extensions: ['ico'] }))
 app.use(express.static('attributes'))
 app.use(bodyParser.json())
